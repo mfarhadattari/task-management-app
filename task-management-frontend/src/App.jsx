@@ -1,8 +1,10 @@
+import TaskForm from "./components/TaskForm";
+
 const App = () => {
   return (
-    <div>
-      <h1>Task Management Application</h1>
-    </div>
+    <main className="my-5">
+      <TaskForm />
+    </main>
   );
 };
 
