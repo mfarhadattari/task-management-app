@@ -19,6 +19,20 @@ const TaskList = ({ tasks, isTaskLoading, refechTasks }) => {
     });
   };
 
+  // start task handler
+  const startTask = (id) => {
+    serverRequest
+      .patch(`/update-status/${id}`, { status: "progress" })
+      .then(({ data }) => {
+        if (data.status === 200) {
+          toast.success("Now task in progress!");
+          refechTasks();
+        } else {
+          toast.error("Someting went wrong!");
+        }
+      });
+  };
+
   return (
     <div className="w-100">
       {isTaskLoading ? (
@@ -73,6 +87,7 @@ const TaskList = ({ tasks, isTaskLoading, refechTasks }) => {
                     <button
                       title="Start this task!"
                       type="button"
+                      onClick={() => startTask(task._id)}
                       className="bg-info  text-white  tma-circle-btn fs-4"
                     >
                       <FaPlayCircle />
