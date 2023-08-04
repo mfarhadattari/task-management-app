@@ -6,7 +6,12 @@ import useServer from "./hooks/useServer";
 const App = () => {
   const { serverRequest } = useServer();
 
-  const { data: tasks = [], isLoading: isTaskLoading } = useQuery({
+  // load all task here
+  const {
+    data: tasks = [],
+    isLoading: isTaskLoading,
+    refetch: refechTasks,
+  } = useQuery({
     queryKey: ["tasks", serverRequest],
     queryFn: async () => {
       const res = await serverRequest.get("/tasks");
@@ -16,8 +21,12 @@ const App = () => {
 
   return (
     <main className="my-5 d-flex w-100 justify-content-center p-5 gap-5">
-      <TaskForm />
-      <TaskList tasks={tasks} isTaskLoading={isTaskLoading} />
+      <TaskForm refechTasks={refechTasks} />
+      <TaskList
+        tasks={tasks}
+        isTaskLoading={isTaskLoading}
+        refechTasks={refechTasks}
+      />
     </main>
   );
 };
