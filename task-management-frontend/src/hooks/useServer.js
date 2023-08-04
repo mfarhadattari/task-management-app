@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const serverRequest = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://task-management-app-kappa.vercel.app",
 });
 const useServer = () => {
   return { serverRequest };
