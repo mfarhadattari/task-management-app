@@ -8,6 +8,7 @@ const taskRoute = require("./routes/tasksRoute");
 // middleware
 const app = express();
 app.use(cors());
+app.use(express.json());
 app.use("/", taskRoute);
 
 // connect with mongodb

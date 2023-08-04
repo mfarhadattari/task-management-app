@@ -2,13 +2,25 @@ const express = require("express");
 const Task = require("../models/task");
 const router = express.Router();
 
+// Create a new task
+router.post("/add-task", async (req, res) => {
+  try {
+    const { title, description, status } = req.body;
+    const newTask = new Task({ title, description, status });
+    await newTask.save();
+    res.status(200).send({ status: 200, message: "Task save successfully!" });
+  } catch (error) {
+    res.status(500).send({ message: "Internal server error" });
+  }
+});
+
 // get all task api
 router.get("/tasks", async (req, res) => {
   try {
     const tasks = await Task.find();
     res.send(tasks);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).send({ error: err.message });
   }
 });
 
