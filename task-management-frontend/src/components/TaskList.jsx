@@ -33,6 +33,20 @@ const TaskList = ({ tasks, isTaskLoading, refechTasks }) => {
       });
   };
 
+  // completed task handeler
+  const completedTask = (id) => {
+    serverRequest
+      .patch(`/update-status/${id}`, { status: "completed" })
+      .then(({ data }) => {
+        if (data.status === 200) {
+          toast.success("Task is completed successfully!");
+          refechTasks();
+        } else {
+          toast.error("Someting went wrong!");
+        }
+      });
+  };
+
   return (
     <div className="w-100">
       {isTaskLoading ? (
@@ -80,18 +94,21 @@ const TaskList = ({ tasks, isTaskLoading, refechTasks }) => {
                       title="Completed this task!"
                       type="button"
                       className="bg-success text-white  tma-circle-btn"
+                      onClick={() => completedTask(task._id)}
                     >
                       <FaCheck />
                     </button>
                   ) : (
-                    <button
-                      title="Start this task!"
-                      type="button"
-                      onClick={() => startTask(task._id)}
-                      className="bg-info  text-white  tma-circle-btn fs-4"
-                    >
-                      <FaPlayCircle />
-                    </button>
+                    task?.status === "todo" && (
+                      <button
+                        title="Start this task!"
+                        type="button"
+                        onClick={() => startTask(task._id)}
+                        className="bg-info  text-white  tma-circle-btn fs-4"
+                      >
+                        <FaPlayCircle />
+                      </button>
+                    )
                   )}
                 </div>
               </div>
