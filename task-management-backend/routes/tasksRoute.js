@@ -25,15 +25,17 @@ router.get("/tasks", async (req, res) => {
 });
 
 // update task status api
-router.patch("/update-status", async (req, res) => {
+router.patch("/update-status/:id", async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id);
+    const task = await Task.findByIdAndUpdate(
+      req.params.id,
+      { status: req.body.status },
+      { new: true }
+    );
     if (!task) {
       return res.status(404).send({ message: "Task not found" });
     }
-    task.status = req.body.status;
-    await task.save();
-    res.send({ status: 200, message: "Successfully updated!" });
+    res.send({ status: 200 });
   } catch (error) {
     res.status(500).send({ message: "Internal server error" });
   }
