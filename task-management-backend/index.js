@@ -2,12 +2,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config()
-const port = process.env.PORT || 5000;
-
+require("dotenv").config();
+const port = process.env.PORT || 3000;
+const taskRoute = require("./routes/tasksRoute");
 // middleware
 const app = express();
 app.use(cors());
+app.use("/", taskRoute);
 
 // connect with mongodb
 mongoose.connect(process.env.MONGODB_URI, {
