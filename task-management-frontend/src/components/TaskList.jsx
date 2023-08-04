@@ -2,7 +2,7 @@ import { FaCheck, FaPlayCircle, FaTrashAlt } from "react-icons/fa";
 import Loaders from "./Loaders";
 import NoData from "./NoData";
 
-const TaskList = ({ tasks, isTaskLoading }) => {
+const TaskList = ({ tasks, isTaskLoading}) => {
   return (
     <div className="w-100">
       {isTaskLoading ? (
