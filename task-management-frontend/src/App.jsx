@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 import useServer from "./hooks/useServer";
+import { Toaster } from 'react-hot-toast'
 
 const App = () => {
   const { serverRequest } = useServer();
@@ -27,6 +28,7 @@ const App = () => {
         isTaskLoading={isTaskLoading}
         refechTasks={refechTasks}
       />
+      <Toaster />
     </main>
   );
 };

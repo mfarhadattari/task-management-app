@@ -1,8 +1,24 @@
 import { FaCheck, FaPlayCircle, FaTrashAlt } from "react-icons/fa";
 import Loaders from "./Loaders";
 import NoData from "./NoData";
+import useServer from "../hooks/useServer";
+import { toast } from "react-hot-toast";
 
-const TaskList = ({ tasks, isTaskLoading}) => {
+const TaskList = ({ tasks, isTaskLoading, refechTasks }) => {
+  const { serverRequest } = useServer();
+
+  // delete task handeler
+  const deleteTask = (id) => {
+    serverRequest.delete(`/delete-task/${id}`).then(({ data }) => {
+      if (data.status === 200) {
+        toast.success(data.message);
+        refechTasks();
+      } else {
+        toast.error("Someting went wrong!");
+      }
+    });
+  };
+
   return (
     <div className="w-100">
       {isTaskLoading ? (
@@ -41,6 +57,7 @@ const TaskList = ({ tasks, isTaskLoading}) => {
                     title="Delete this task!"
                     type="button"
                     className="bg-danger text-white  tma-circle-btn"
+                    onClick={() => deleteTask(task._id)}
                   >
                     <FaTrashAlt />
                   </button>

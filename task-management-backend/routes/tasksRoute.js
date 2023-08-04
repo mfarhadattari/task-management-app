@@ -17,11 +17,11 @@ router.delete("/delete-task/:id", async (req, res) => {
   try {
     const task = await Task.findByIdAndDelete(req.params.id);
     if (!task) {
-      return res.status(404).json({ message: "Task not found" });
+      return res.status(404).send({ message: "Task not found" });
     }
-    res.json({ message: "Task deleted successfully" });
+    res.send({ status: 200, message: "Task deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).send({ message: "Internal server error" });
   }
 });
 
