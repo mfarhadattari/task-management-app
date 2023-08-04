@@ -21,7 +21,7 @@ const App = () => {
   });
 
   return (
-    <main className="my-5 d-flex w-100 justify-content-center p-5 gap-5">
+    <main className="mt-5 d-flex flex-column flex-md-row w-100 justify-content-center p-2 p-md-4  gap-5">
       <TaskForm refechTasks={refechTasks} />
       <TaskList
         tasks={tasks}

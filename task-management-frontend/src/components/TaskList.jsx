@@ -49,6 +49,7 @@ const TaskList = ({ tasks, isTaskLoading, refechTasks }) => {
 
   return (
     <div className="w-100">
+      <h1 className="text-center mb-5">Task List</h1>
       {isTaskLoading ? (
         <div>
           <Loaders />
