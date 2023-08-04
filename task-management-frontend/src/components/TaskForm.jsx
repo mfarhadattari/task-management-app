@@ -1,7 +1,10 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import useServer from "../hooks/useServer";
+import toast from "react-hot-toast";
 
-const TaskForm = () => {
+const TaskForm = ({ refechTasks }) => {
+  const { serverRequest } = useServer();
   const validationSchema = Yup.object({
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
@@ -13,8 +16,21 @@ const TaskForm = () => {
       description: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
+      const taskInfo = {
+        title: values.title,
+        description: values.description,
+        status: "todo",
+      };
+      serverRequest.post("/add-task", taskInfo).then(({ data }) => {
+        if (data.status === 200) {
+          toast.success(data.message);
+          refechTasks();
+          resetForm();
+        } else {
+          toast.error("Someting went wrong!");
+        }
+      });
     },
   });
 

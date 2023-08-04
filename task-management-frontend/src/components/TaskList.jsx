@@ -31,7 +31,7 @@ const TaskList = ({ tasks, isTaskLoading, refechTasks }) => {
         </div>
       ) : (
         <ul className="list-group">
-          {tasks.map((task) => (
+          {tasks?.map((task) => (
             <li
               key={task._id}
               className="list-group-item d-flex justify-content-between align-items-start"
