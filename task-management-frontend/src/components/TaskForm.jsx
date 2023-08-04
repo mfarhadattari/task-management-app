@@ -71,6 +71,7 @@ const TaskForm = ({ refechTasks }) => {
             id="description"
             name="description"
             placeholder="Description"
+            rows={5}
             className={`form-control ${
               formik.touched.description && formik.errors.description
                 ? "is-invalid"
