@@ -9,6 +9,26 @@ const taskAPI = createApi({
     getTasks: build.query({
       query: () => "/tasks",
     }),
+    addTask: build.mutation({
+      query: (body) => ({
+        url: "/add-task",
+        method: "POST",
+        body: body,
+      }),
+    }),
+    deleteTask: build.mutation({
+      query: (id) => ({
+        url: `/delete-task/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    updateTaskStatus: build.mutation({
+      query: ({ id, status }) => ({
+        url: `/update-status/${id}`,
+        method: "PATCH",
+        body: { status: status },
+      }),
+    }),
   }),
 });
 
