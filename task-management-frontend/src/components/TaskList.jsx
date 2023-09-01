@@ -1,50 +1,35 @@
-import { toast } from "react-hot-toast";
+import { useEffect } from "react";
 import { FaCheck, FaPlayCircle, FaTrashAlt } from "react-icons/fa";
-import useServer from "../hooks/useServer";
+import {
+  useDeleteTaskMutation,
+  useUpdateTaskStatusMutation,
+} from "../redux/features/api/taskAPI";
 import Loaders from "./Loaders";
 import NoData from "./NoData";
 
 const TaskList = ({ tasks, isTaskLoading, refetchTasks }) => {
-  const { serverRequest } = useServer();
+  const [deleteTask, deleteResult] = useDeleteTaskMutation();
+  const [updateTaskStatus, updateResult] = useUpdateTaskStatusMutation();
+
+  useEffect(() => {
+    if (deleteResult.data || updateResult.data) {
+      refetchTasks();
+    }
+  }, [deleteResult, updateResult, refetchTasks]);
 
   // delete task handler
-  const deleteTask = (id) => {
-    serverRequest.delete(`/delete-task/${id}`).then(({ data }) => {
-      if (data.status === 200) {
-        toast.success(data.message);
-        refetchTasks();
-      } else {
-        toast.error("Something went wrong!");
-      }
-    });
+  const handelDeleteTask = (id) => {
+    deleteTask(id);
   };
 
   // start task handler
   const startTask = (id) => {
-    serverRequest
-      .patch(`/update-status/${id}`, { status: "progress" })
-      .then(({ data }) => {
-        if (data.status === 200) {
-          toast.success("Now task in progress!");
-          refetchTasks();
-        } else {
-          toast.error("Someting went wrong!");
-        }
-      });
+    updateTaskStatus({ id: id, status: "progress" });
   };
 
-  // completed task handeler
+  // completed task handler
   const completedTask = (id) => {
-    serverRequest
-      .patch(`/update-status/${id}`, { status: "completed" })
-      .then(({ data }) => {
-        if (data.status === 200) {
-          toast.success("Task is completed successfully!");
-          refetchTasks();
-        } else {
-          toast.error("Someting went wrong!");
-        }
-      });
+    updateTaskStatus({ id: id, status: "completed" });
   };
 
   return (
@@ -86,7 +71,7 @@ const TaskList = ({ tasks, isTaskLoading, refetchTasks }) => {
                     title="Delete this task!"
                     type="button"
                     className="bg-danger text-white  tma-circle-btn"
-                    onClick={() => deleteTask(task._id)}
+                    onClick={() => handelDeleteTask(task._id)}
                   >
                     <FaTrashAlt />
                   </button>

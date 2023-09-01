@@ -1,10 +1,17 @@
 import { useFormik } from "formik";
-import toast from "react-hot-toast";
+import { useEffect } from "react";
 import * as Yup from "yup";
-import useServer from "../hooks/useServer";
+import { useAddTaskMutation } from "../redux/features/api/taskAPI";
 
 const TaskForm = ({ refetchTasks }) => {
-  const { serverRequest } = useServer();
+  const [addTask, addResult] = useAddTaskMutation();
+
+  useEffect(() => {
+    if (addResult.data) {
+      refetchTasks();
+    }
+  }, [addResult, refetchTasks]);
+
   const validationSchema = Yup.object({
     title: Yup.string().required("Title is required"),
     description: Yup.string().required("Description is required"),
@@ -22,15 +29,9 @@ const TaskForm = ({ refetchTasks }) => {
         description: values.description,
         status: "todo",
       };
-      serverRequest.post("/add-task", taskInfo).then(({ data }) => {
-        if (data.status === 200) {
-          toast.success(data.message);
-          refetchTasks();
-          resetForm();
-        } else {
-          toast.error("Something went wrong!");
-        }
-      });
+      addTask(taskInfo);
+      resetForm();
+      refetchTasks();
     },
   });
 

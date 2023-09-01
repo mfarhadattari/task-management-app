@@ -32,6 +32,6 @@ const taskAPI = createApi({
   }),
 });
 
-export const { useGetTasksQuery } = taskAPI;
+export const { useGetTasksQuery , useAddTaskMutation, useDeleteTaskMutation, useUpdateTaskStatusMutation} = taskAPI;
 
 export default taskAPI;
