@@ -1,20 +1,20 @@
+import { toast } from "react-hot-toast";
 import { FaCheck, FaPlayCircle, FaTrashAlt } from "react-icons/fa";
+import useServer from "../hooks/useServer";
 import Loaders from "./Loaders";
 import NoData from "./NoData";
-import useServer from "../hooks/useServer";
-import { toast } from "react-hot-toast";
 
-const TaskList = ({ tasks, isTaskLoading, refechTasks }) => {
+const TaskList = ({ tasks, isTaskLoading, refetchTasks }) => {
   const { serverRequest } = useServer();
 
-  // delete task handeler
+  // delete task handler
   const deleteTask = (id) => {
     serverRequest.delete(`/delete-task/${id}`).then(({ data }) => {
       if (data.status === 200) {
         toast.success(data.message);
-        refechTasks();
+        refetchTasks();
       } else {
-        toast.error("Someting went wrong!");
+        toast.error("Something went wrong!");
       }
     });
   };
@@ -26,7 +26,7 @@ const TaskList = ({ tasks, isTaskLoading, refechTasks }) => {
       .then(({ data }) => {
         if (data.status === 200) {
           toast.success("Now task in progress!");
-          refechTasks();
+          refetchTasks();
         } else {
           toast.error("Someting went wrong!");
         }
@@ -40,7 +40,7 @@ const TaskList = ({ tasks, isTaskLoading, refechTasks }) => {
       .then(({ data }) => {
         if (data.status === 200) {
           toast.success("Task is completed successfully!");
-          refechTasks();
+          refetchTasks();
         } else {
           toast.error("Someting went wrong!");
         }
